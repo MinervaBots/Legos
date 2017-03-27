@@ -16,12 +16,13 @@ public class UltraSensor implements Sensor
 	@Override
 	public float getWeight()
 	{
-		return _weight;
+		return this._weight;
 	}
 	
 	@Override
 	public boolean isDetecting()
 	{
+		//System.out.println("isDetecting");
 		return _sensor.getDistance() < _maxDistance;
 	}
 }

@@ -23,10 +23,10 @@ public class Sensoring
 		{
 			if(sensor.isDetecting())
 			{
-				detectedCount++;
+				detectedCount += 1;
 				errorsSum += sensor.getWeight();
 			}
 		}
-		return errorsSum / detectedCount;
+		return detectedCount == 0 ? 0 : errorsSum / detectedCount;
 	}
 }

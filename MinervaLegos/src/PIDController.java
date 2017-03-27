@@ -1,36 +1,42 @@
 
 public class PIDController
 {
+	private float _setPoint;
 	private float _proportionalConstant;
 	private float _integralConstant;
 	private float _derivativeConstant;
-	
-	private float _proportional;
-	private float _integral;
-	private float _derivative;
+
+
+	private float _errorSum;
+	private long _lastTime;
 	private float _lastError;
-	private float _lastRun;
-	private int _delayMs;
 	
-	public PIDController(float proportionalConstant, float integralConstant, float derivativeConstant, int delayMs)
+	public PIDController(float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant)
 	{
+		_setPoint = setPoint;
 		_proportionalConstant = proportionalConstant;
 		_integralConstant = integralConstant;
 		_derivativeConstant = derivativeConstant;
-		_delayMs = delayMs;
+		_lastTime = System.currentTimeMillis();
 	}
 	
-	public float Run(float error)
+	public float Run(float intput)
 	{
-		if ((System.currentTimeMillis() - _lastRun) > _delayMs)
-		{
-			_integral += _integralConstant * error;
-			_derivative = _derivativeConstant * (error - _lastError);
-			_proportional = _proportionalConstant * error;
-			
-			_lastError = error;
-			_lastRun = System.currentTimeMillis();
-		}
-		return (_proportional + _integral + _derivative);
+		long now = System.currentTimeMillis();
+		long timeChange = (now - _lastTime);
+
+		float error = _setPoint - intput;
+		_errorSum += (error * timeChange);
+		float dErr = (error - _lastError) / timeChange;
+		   
+		
+		float output = _proportionalConstant * error;
+		output += _integralConstant * _errorSum;
+		output += _derivativeConstant * dErr;
+		
+		_lastError = error;
+		_lastTime = now;
+		
+		return output;
 	}
 }

@@ -13,25 +13,27 @@ public class TwoMotorsController implements MotorController
 	
 	public <T extends RegulatedMotor> TwoMotorsController(T leftMotor, T rightMotor, float offsetLeft, float offsetRight, boolean invertLeft, boolean invertRight)
 	{
+		_leftMotor = leftMotor;
+		_rightMotor = rightMotor;
 		_offsetLeft = offsetLeft;
 		_offsetRight = offsetRight;
 		_invertionLeft = (char) (invertLeft ? -1 : 1);
 		_invertionRight = (char) (invertRight ? -1 : 1);
-		_maxSpeedPercentage = rightMotor.getMaxSpeed();
+		_maxSpeedPercentage = rightMotor.getMaxSpeed()/100;
 	}
 	
 	@Override
 	public void Move(float error, float power)
 	{
-		float leftPower = 1;
-		float rightPower = 1;
+		float leftPower = 100;
+		float rightPower = 100;
 		if(error < 0)
 		{
-			leftPower = 1 - Math.abs(power);
+			leftPower = 100 - Math.abs(power);
 		}
 		else if(error > 0)
 		{
-			rightPower = 1 - Math.abs(power);
+			rightPower = 100 - Math.abs(power);
 		}
 		leftPower = Math.round(leftPower * _maxSpeedPercentage * _invertionLeft * _offsetLeft);
 		rightPower = Math.round(rightPower * _maxSpeedPercentage * _invertionRight * _offsetRight);

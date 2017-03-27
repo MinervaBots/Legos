@@ -11,13 +11,12 @@ public class Treta
 	
 	public static void main(String[] args)
 	{
-		bindButtons();
 		setup();
-		assert(_legoSumo != null);
-		selectStrategy();
-		
+		bindButtons();
+		//selectStrategy();
 		while(true)
 		{
+			//_legoSumo.Move(100, 100);
 			_legoSumo.Update();
 		}
 	}
@@ -40,19 +39,19 @@ public class Treta
 	
 	private static void selectStrategy()
 	{
-		
+		Button.ENTER.waitForPressAndRelease();
 	}
 	
 	private static void setup()
 	{
-		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.A), new NXTRegulatedMotor(MotorPort.B), 0f, 0f, false, false);
-		PIDController pidController = new PIDController(0.1f, 0.5f, 1f, 5);
+		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.C), 1f, 1f, false, false);
+		PIDController pidController = new PIDController(0, 0.4f, 0.01f, 10f);
 		
 		Sensoring sensoring = new Sensoring();
 		
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, -20f));
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, 0f));
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, 20f));
+		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, -20f));
+		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 0f));
+		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, 20f));
 		
 		_legoSumo = new LegoSumo(motor, sensoring, pidController);
 	}
