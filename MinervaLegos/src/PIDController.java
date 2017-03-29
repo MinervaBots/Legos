@@ -18,21 +18,23 @@ public class PIDController
 		_integralConstant = integralConstant;
 		_derivativeConstant = derivativeConstant;
 		_lastTime = System.currentTimeMillis();
+		_lastError = 0;
+		_errorSum = 0;
 	}
 	
 	public float Run(float intput)
 	{
 		long now = System.currentTimeMillis();
-		long timeChange = (now - _lastTime);
+		long deltaTime = (now - _lastTime);
 
 		float error = _setPoint - intput;
-		_errorSum += (error * timeChange);
-		float dErr = (error - _lastError) / timeChange;
+		_errorSum += (error * deltaTime);
+		float dErr = (error - _lastError);// / deltaTime;
 		   
 		
-		float output = _proportionalConstant * error;
-		output += _integralConstant * _errorSum;
-		output += _derivativeConstant * dErr;
+		float output = _proportionalConstant * error;	// Proporcional
+		output += _integralConstant * _errorSum;		// Integrativo
+		output += _derivativeConstant * dErr;			// Derivativo
 		
 		_lastError = error;
 		_lastTime = now;

@@ -1,28 +1,20 @@
 import lejos.nxt.UltrasonicSensor;
 
-public class UltraSensor implements Sensor
+public class UltraSensor extends Sensor
 {
-	private float _weight;
 	private UltrasonicSensor _sensor;
 	private int _maxDistance;
 	
 	public UltraSensor(UltrasonicSensor lejosSensor, int maxDistance, float weight)
 	{
+		super(weight);
 		_sensor = lejosSensor;
-		_weight = weight;
 		_maxDistance = maxDistance;
 	}
 	
 	@Override
-	public float getWeight()
+	public boolean update()
 	{
-		return this._weight;
-	}
-	
-	@Override
-	public boolean isDetecting()
-	{
-		//System.out.println("isDetecting");
 		return _sensor.getDistance() < _maxDistance;
 	}
 }

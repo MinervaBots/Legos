@@ -35,9 +35,12 @@ public class TwoMotorsController implements MotorController
 		{
 			rightPower = 100 - Math.abs(power);
 		}
+		leftPower = clamp(leftPower, -100, 100);
+		rightPower = clamp(rightPower, -100, 100);
+		
 		leftPower = Math.round(leftPower * _maxSpeedPercentage * _invertionLeft * _offsetLeft);
 		rightPower = Math.round(rightPower * _maxSpeedPercentage * _invertionRight * _offsetRight);
-		
+
 		_leftMotor.setSpeed((int)Math.abs(leftPower));
 		_rightMotor.setSpeed((int)Math.abs(rightPower));
 	
@@ -58,5 +61,12 @@ public class TwoMotorsController implements MotorController
 		{
 			_rightMotor.forward();
 		}
+	}
+	
+	private static float clamp(float val, float min, float max)
+	{
+		if(val > max) return max;
+		if(val < min) return min;
+		return val;
 	}
 }
