@@ -19,7 +19,7 @@ public class Brinquedo
 		
 		while(true)
 		{
-			_legoSumo.Update();
+			_legoSumo.update();
 		}
 	}
 	
@@ -71,9 +71,9 @@ public class Brinquedo
 
 		Sensoring sensoring = new Sensoring();
 		
-		sensoring.AddSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, -20f));
-		sensoring.AddSensor(new InfraRedSensor(new EV3IRSensor(SensorPort.S2), 40, 0f));
-		sensoring.AddSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 20f));
+		sensoring.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, -20f));
+		sensoring.addSensor(new InfraRedSensor(new EV3IRSensor(SensorPort.S2), 40, 0f));
+		sensoring.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 20f));
 		
 		_legoSumo = new LegoSumo(motor, sensoring, pidController, 5000);
 		_legoSumo.addWeapon(new Weapon(new NXTRegulatedMotor(MotorPort.C), false), 100);

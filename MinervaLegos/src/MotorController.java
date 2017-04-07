@@ -1,5 +1,5 @@
 
 public interface MotorController {
 
-	void Move(float error, float direction);
+	void move(float error, float direction);
 }

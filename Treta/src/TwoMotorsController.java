@@ -23,7 +23,7 @@ public class TwoMotorsController implements MotorController
 	}
 	
 	@Override
-	public void Move(float error, float power)
+	public void move(float error, float power)
 	{
 		float leftPower = 100;
 		float rightPower = 100;

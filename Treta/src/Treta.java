@@ -17,7 +17,7 @@ public class Treta
 		
 		while(true)
 		{
-			_legoSumo.Update();
+			_legoSumo.update();
 		}
 	}
 	
@@ -67,9 +67,9 @@ public class Treta
 		
 		Sensoring sensoring = new Sensoring(new SensorFilter(3, 2));
 		
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, -30f));
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 0f));
-		sensoring.AddSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, 30f));
+		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, -30f));
+		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 0f));
+		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, 30f));
 		
 		_legoSumo = new LegoSumo(motor, sensoring, pidController, 5000);
 	}

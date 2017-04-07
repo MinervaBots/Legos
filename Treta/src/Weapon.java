@@ -28,7 +28,5 @@ public class Weapon implements ActiveWeapon
 	public void setPower(int power)
 	{
 		_motor.setSpeed(power);
-		
 	}
-
 }

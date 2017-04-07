@@ -19,7 +19,7 @@ public class Sensoring
 		_sensors = new ArrayList<Sensor>();
 	}
 	
-	public void AddSensor(Sensor sensor)
+	public void addSensor(Sensor sensor)
 	{
 		_sensors.add(sensor);
 	}
@@ -36,7 +36,7 @@ public class Sensoring
 		
 	}
 	
-	public float Update()
+	public float update()
 	{
 		int errorsSum = 0;
 		detectedCount = 0;

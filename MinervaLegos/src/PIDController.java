@@ -22,7 +22,7 @@ public class PIDController
 		_errorSum = 0;
 	}
 	
-	public float Run(float intput)
+	public float run(float intput)
 	{
 		long now = System.currentTimeMillis();
 		long deltaTime = (now - _lastTime);

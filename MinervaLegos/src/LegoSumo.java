@@ -28,19 +28,19 @@ public class LegoSumo
 		_activeWeapons.add(weapon);
 	}
 	
-	public void Update()
+	public void update()
 	{
-		float error = _sensoring.Update();
+		float error = _sensoring.update();
 		if(_sensoring.detectedCount != 0)
 		{
 			System.out.println("Error: " + error);
-			float power = _pidController.Run(error);
+			float power = _pidController.run(error);
 			//System.out.println("Power: " + power);
-			_motorController.Move(error, power);
+			_motorController.move(error, power);
 			if(error != 0) _lastValidError = error;
 			return;
 		}
-		_motorController.Move(_lastValidError, 200);
+		_motorController.move(_lastValidError, 200);
 	}
 	
 	public void start(Direction initialDirection)
@@ -55,17 +55,17 @@ public class LegoSumo
 		}
 		if(initialDirection == Direction.Left)
 		{
-			_motorController.Move(-1, 200);
+			_motorController.move(-1, 200);
 		}
 		else if(initialDirection == Direction.Right)
 		{
-			_motorController.Move(1, 200);
+			_motorController.move(1, 200);
 		}
 		else
 		{
-			_motorController.Move(0, 0);
+			_motorController.move(0, 0);
 		}
-		while(_sensoring.Update() == 0);
+		while(_sensoring.update() == 0);
 	}
 	
 	private static void sleep(int delay)
