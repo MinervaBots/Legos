@@ -57,7 +57,7 @@ public class Treta
 			}
 		}
 		Button.ENTER.waitForPressAndRelease();
-		_legoSumo.init(initialDirection);
+		_legoSumo.start(initialDirection);
 	}
 	
 	private static void setup()

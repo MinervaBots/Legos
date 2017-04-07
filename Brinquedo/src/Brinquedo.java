@@ -61,7 +61,7 @@ public class Brinquedo
 			}
 		}
 		Button.ENTER.waitForPressAndRelease();
-		_legoSumo.init(initialDirection);
+		_legoSumo.start(initialDirection);
 	}
 	
 	private static void setup()
@@ -76,5 +76,6 @@ public class Brinquedo
 		sensoring.AddSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 20f));
 		
 		_legoSumo = new LegoSumo(motor, sensoring, pidController, 5000);
+		_legoSumo.addWeapon(new Weapon(new NXTRegulatedMotor(MotorPort.C), false), 100);
 	}
 }
