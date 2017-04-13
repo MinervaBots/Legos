@@ -35,7 +35,7 @@ public class LegoSumo
 		{
 			System.out.println("Error: " + error);
 			float power = _pidController.run(error);
-			//System.out.println("Power: " + power);
+			System.out.println("Power: " + power);
 			_motorController.move(error, power);
 			if(error != 0) _lastValidError = error;
 			return;
@@ -57,13 +57,9 @@ public class LegoSumo
 		{
 			_motorController.move(-1, 200);
 		}
-		else if(initialDirection == Direction.Right)
-		{
-			_motorController.move(1, 200);
-		}
 		else
 		{
-			_motorController.move(0, 0);
+			_motorController.move(1, 200);
 		}
 		while(_sensoring.update() == 0);
 	}

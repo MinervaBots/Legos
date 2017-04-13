@@ -40,14 +40,16 @@ public class Sensoring
 	{
 		int errorsSum = 0;
 		detectedCount = 0;
+		float weightSum = 0;
 		for(Sensor sensor : _sensors)
 		{
 			if(sensor.isDetecting())
 			{
 				detectedCount += 1;
-				errorsSum += sensor.getWeight();
+				errorsSum += sensor.getError();
+				weightSum += sensor.getWeight();
 			}
 		}
-		return detectedCount == 0 ? 0 : errorsSum / detectedCount;
+		return detectedCount == 0 ? 0 : errorsSum / weightSum;
 	}
 }
