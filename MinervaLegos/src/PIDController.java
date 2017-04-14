@@ -78,7 +78,7 @@ public class PIDController
 		
 		float output = _proportionalConstant * error;	// Proporcional
 		output += _integralConstant * _errorSum;		// Integrativo
-		output += _derivativeConstant * dInput;			// Derivativo
+		output -= _derivativeConstant * dInput;			// Derivativo
 		
 		_lastInput = input;
 		_lastTime = now;
