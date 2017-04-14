@@ -1,19 +1,19 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sensoring
+public class SensorArray
 {
 	public int detectedCount;
 	
 	private List<Sensor> _sensors;
 	private SensorFilter _filter;
 	
-	public Sensoring()
+	public SensorArray()
 	{
 		this(null);
 	}
 	
-	public Sensoring(SensorFilter filter)
+	public SensorArray(SensorFilter filter)
 	{
 		_filter = filter;
 		_sensors = new ArrayList<Sensor>();

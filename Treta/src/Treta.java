@@ -66,12 +66,12 @@ public class Treta
 		PIDController pidController = new PIDController(0, 90f, 0.1f, 10f);
 		pidController.setIntegralLimits(-80, 80);
 		
-		Sensoring sensoring = new Sensoring(new SensorFilter(3, 2));
+		SensorArray sensorArray = new SensorArray(new SensorFilter(3, 2));
 		
-		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, 1, -1f));
-		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 3, 0f));
-		sensoring.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, 1, 1f));
+		sensorArray.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, 1, -1f));
+		sensorArray.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 3, 0f));
+		sensorArray.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S4), 40, 1, 1f));
 		
-		_legoSumo = new LegoSumo(motor, sensoring, pidController, 5000);
+		_legoSumo = new LegoSumo(motor, sensorArray, pidController, 5000);
 	}
 }

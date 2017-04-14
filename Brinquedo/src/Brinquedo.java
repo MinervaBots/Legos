@@ -69,13 +69,13 @@ public class Brinquedo
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, false, false);
 		PIDController pidController = new PIDController(0, 3f, 0.08f, 3.6f);
 
-		Sensoring sensoring = new Sensoring();
+		SensorArray sensorArray = new SensorArray();
 		
-		sensoring.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, 1, -20f));
-		sensoring.addSensor(new InfraRedSensor(new EV3IRSensor(SensorPort.S2), 40, 3, 0f));
-		sensoring.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 1, 20f));
+		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, 1, -20f));
+		sensorArray.addSensor(new InfraRedSensor(new EV3IRSensor(SensorPort.S2), 40, 3, 0f));
+		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 1, 20f));
 		
-		_legoSumo = new LegoSumo(motor, sensoring, pidController, 5000);
+		_legoSumo = new LegoSumo(motor, sensorArray, pidController, 5000);
 		_legoSumo.addWeapon(new Weapon(new NXTRegulatedMotor(MotorPort.C), false), 100);
 	}
 }

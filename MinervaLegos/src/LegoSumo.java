@@ -5,7 +5,7 @@ public class LegoSumo
 {
 	private int _initDelay;
 	
-	private Sensoring _sensoring;
+	private SensorArray _sensorArray;
 	private PIDController _pidController;
 	private MotorController _motorController;
 	
@@ -13,10 +13,10 @@ public class LegoSumo
 
 	private List<ActiveWeapon> _activeWeapons;
 	
-	public LegoSumo(MotorController motorController, Sensoring sensoring, PIDController pidController, int delay)
+	public LegoSumo(MotorController motorController, SensorArray sensorArray, PIDController pidController, int delay)
 	{
 		_motorController = motorController;
-		_sensoring = sensoring;
+		_sensorArray = sensorArray;
 		_pidController = pidController;
 		_initDelay = delay;
 		_activeWeapons = new ArrayList<ActiveWeapon>();
@@ -30,8 +30,8 @@ public class LegoSumo
 	
 	public void update()
 	{
-		float error = _sensoring.update();
-		if(_sensoring.detectedCount != 0)
+		float error = _sensorArray.update();
+		if(_sensorArray.detectedCount != 0)
 		{
 			System.out.println("Error: " + error);
 			float power = _pidController.run(error);
@@ -48,7 +48,7 @@ public class LegoSumo
 		System.out.println("Iniciado");
 		sleep(_initDelay);
 		
-		_sensoring.init();
+		_sensorArray.init();
 		for	(ActiveWeapon weapon : _activeWeapons)
 		{
 			weapon.start();
@@ -61,7 +61,7 @@ public class LegoSumo
 		{
 			_motorController.move(1, 200);
 		}
-		while(_sensoring.update() == 0);
+		while(_sensorArray.update() == 0);
 	}
 	
 	private static void sleep(int delay)
