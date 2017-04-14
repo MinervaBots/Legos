@@ -9,23 +9,17 @@ public class PIDController
 	private float _derivativeConstant;
 
 
-	private float _errorSum;
 	private long _lastTime;
 	private float _lastInput;
 	private float _lastOutput;
 
-	private boolean _limitIntegralTerm;
-	private float _integralMin;
-	private float _integralMax;
+	private float _integrativeTermSum;
 
 	public PIDController(int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant)
 	{
 		_sampleTime = sampleTime;
 		_setPoint = setPoint;
 		_lastTime = System.currentTimeMillis();
-		_lastInput = 0;
-		_errorSum = 0;
-		_limitIntegralTerm = false;
 
 		_proportionalConstant = proportionalConstant;
 		// Essa converção não é necessária, mas permite que a gente entre com valores
@@ -39,13 +33,6 @@ public class PIDController
 		// tl;dr: deixa o código mais rápido e mais eficiente.
 	}
 	
-	public void setIntegralLimits(float min, float max)
-	{
-		_limitIntegralTerm = true;
-		_integralMin = min;
-		_integralMax = max;
-	}
-	
 	public float run(float input)
 	{
 		long now = System.currentTimeMillis();
@@ -57,18 +44,10 @@ public class PIDController
 		
 		float error = _setPoint - input;
 		
-		_errorSum += error;
-		if(_limitIntegralTerm)
-		{
-			if(_errorSum < _integralMin)
-			{
-				_errorSum = _integralMin;
-			}
-			else if(_errorSum > _integralMax)
-			{
-				_errorSum = _integralMax;
-			}
-		}
+		// Salva o valor acumulado do fator integrativo
+		// Isso torna possivel mudar a constante integrativa sem gerar uma mudança abruta na saída
+		// já que o acumulo dos erros não é mais multiplicado pelo mesmo valor que antes
+		_integrativeTermSum += error * _integralConstant;
 		
 		// Faz a derivada das entradas para evitar o "derivative kick", que ocorre mudando o setPoint
 		// Não acontece em nenhum dos nossos projetos, mas é uma implementação melhor,
@@ -77,7 +56,7 @@ public class PIDController
 		
 		
 		float output = _proportionalConstant * error;	// Proporcional
-		output += _integralConstant * _errorSum;		// Integrativo
+		output += _integrativeTermSum;		// Integrativo
 		output -= _derivativeConstant * dInput;			// Derivativo
 		
 		_lastInput = input;
