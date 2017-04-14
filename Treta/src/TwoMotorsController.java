@@ -23,21 +23,22 @@ public class TwoMotorsController implements MotorController
 	}
 	
 	@Override
-	public void move(float error, float power)
+	public void move(float direction, float power)
 	{
 		float leftPower = 100;
 		float rightPower = 100;
-		if(error < 0)
+		if(direction < 0)
 		{
 			leftPower = 100 - Math.abs(power);
 		}
-		else if(error > 0)
+		else if(direction > 0)
 		{
 			rightPower = 100 - Math.abs(power);
 		}
+		/*
 		leftPower = clamp(leftPower, -100, 100);
 		rightPower = clamp(rightPower, -100, 100);
-		
+		//*/
 		leftPower = Math.round(leftPower * _maxSpeedPercentage * _invertionLeft * _offsetLeft);
 		rightPower = Math.round(rightPower * _maxSpeedPercentage * _invertionRight * _offsetRight);
 
@@ -62,11 +63,12 @@ public class TwoMotorsController implements MotorController
 			_rightMotor.forward();
 		}
 	}
-	
+	/*
 	private static float clamp(float val, float min, float max)
 	{
 		if(val > max) return max;
 		if(val < min) return min;
 		return val;
 	}
+	//*/
 }

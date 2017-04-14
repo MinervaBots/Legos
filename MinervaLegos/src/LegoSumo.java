@@ -9,7 +9,7 @@ public class LegoSumo
 	private PIDController _pidController;
 	private MotorController _motorController;
 	
-	private float _lastValidError;
+	private float _lastValidDirection;
 
 	private List<ActiveWeapon> _activeWeapons;
 	
@@ -30,17 +30,24 @@ public class LegoSumo
 	
 	public void update()
 	{
-		float error = _sensorArray.update();
+		float direction = _sensorArray.update();
+		System.out.println("Error: " + direction);
 		if(_sensorArray.detectedCount != 0)
 		{
-			System.out.println("Error: " + error);
-			float power = _pidController.input(error).run();
+			float power = _pidController.input(direction).run();
 			System.out.println("Power: " + power);
-			_motorController.move(error, power);
-			if(error != 0) _lastValidError = error;
+			
+			_motorController.move(direction, power);
+			if(direction != 0)
+			{
+				// Se temos uma direção pra seguir, deixa ela guardada.
+				// 0 é invalido pois o robô iria pra frente e provavelmente sairia da arena.
+				_lastValidDirection = direction;
+			}
 			return;
 		}
-		_motorController.move(_lastValidError, 200);
+		// Segue na ultima direção que o alvo foi localizado
+		_motorController.move(_lastValidDirection, 200);
 	}
 	
 	public void start(Direction initialDirection)

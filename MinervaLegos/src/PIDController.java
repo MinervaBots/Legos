@@ -155,7 +155,7 @@ public class PIDController
 		_inAuto = newAuto;
 	}
 	
-	public void togger()
+	public void toggle()
 	{
 		toggle(!_inAuto);
 	}
