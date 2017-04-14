@@ -6,9 +6,9 @@ public class UltraSensor extends Sensor
 	private int _maxDistance;
 	private float[] _dist;
 	
-	public UltraSensor(NXTUltrasonicSensor lejosSensor, int maxDistance, float weight)
+	public UltraSensor(NXTUltrasonicSensor lejosSensor, int maxDistance, float weight, float error)
 	{
-		super(weight);
+		super(weight, error);
 		_sensor = lejosSensor;
 		_maxDistance = maxDistance;
 		_dist = new float[_sensor.getDistanceMode().sampleSize()];

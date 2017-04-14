@@ -6,9 +6,9 @@ public class InfraRedSensor extends Sensor
 	private int _maxDistance;
 	private float[] _dist;
 	
-	public InfraRedSensor(EV3IRSensor lejosSensor, int maxDistance, float weight)
+	public InfraRedSensor(EV3IRSensor lejosSensor, int maxDistance, float weight, float error)
 	{
-		super(weight);
+		super(weight, error);
 		_sensor = lejosSensor;
 		_maxDistance = maxDistance;
 		_dist = new float[_sensor.getDistanceMode().sampleSize()];
