@@ -11,7 +11,7 @@ public class PIDController
 
 	private float _errorSum;
 	private long _lastTime;
-	private float _lastError;
+	private float _lastInput;
 	private float _lastOutput;
 
 	private boolean _limitIntegralTerm;
@@ -23,7 +23,7 @@ public class PIDController
 		_sampleTime = sampleTime;
 		_setPoint = setPoint;
 		_lastTime = System.currentTimeMillis();
-		_lastError = 0;
+		_lastInput = 0;
 		_errorSum = 0;
 		_limitIntegralTerm = false;
 
@@ -46,7 +46,7 @@ public class PIDController
 		_integralMax = max;
 	}
 	
-	public float run(float intput)
+	public float run(float input)
 	{
 		long now = System.currentTimeMillis();
 		long deltaTime = (now - _lastTime);
@@ -55,7 +55,7 @@ public class PIDController
 			return _lastOutput;
 		}
 		
-		float error = _setPoint - intput;
+		float error = _setPoint - input;
 		
 		_errorSum += error;
 		if(_limitIntegralTerm)
@@ -70,14 +70,17 @@ public class PIDController
 			}
 		}
 		
-		float dErr = (error - _lastError);
+		// Faz a derivada das entradas para evitar o "derivative kick", que ocorre mudando o setPoint
+		// Não acontece em nenhum dos nossos projetos, mas é uma implementação melhor,
+		// e o custo computacional é identico
+		float dInput = (input - _lastInput);
 		
 		
 		float output = _proportionalConstant * error;	// Proporcional
 		output += _integralConstant * _errorSum;		// Integrativo
-		output += _derivativeConstant * dErr;			// Derivativo
+		output += _derivativeConstant * dInput;			// Derivativo
 		
-		_lastError = error;
+		_lastInput = input;
 		_lastTime = now;
 		_lastOutput = output;
 		
