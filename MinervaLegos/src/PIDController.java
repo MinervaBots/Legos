@@ -1,6 +1,7 @@
 
 public class PIDController
 {
+	private Direction _controllerDirection;
 	private int _sampleTime;
 	private float _setPoint;
 	private float _input;
@@ -23,13 +24,14 @@ public class PIDController
 	
 	public PIDController()
 	{
-		// Inicializa em modo automático
-		_inAuto = true;
+		_inAuto = true; // O padrão é em modo automático
+		controllerDirection(Direction.DIRECT);
 	}
 	
-	public PIDController(int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
+	public PIDController(Direction direction, int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
 	{
 		this();
+		controllerDirection(direction);
 		sampleTime(sampleTime);
 		tunings(proportionalConstant, integralConstant, derivativeConstant);
 		setPoint(setPoint);
@@ -92,6 +94,14 @@ public class PIDController
 	
 	public PIDController tunings(float proportionalConstant, float integralConstant, float derivativeConstant)
 	{
+		if (proportionalConstant < 0 ||
+				integralConstant < 0 ||
+				derivativeConstant < 0)
+		{
+			throw new IllegalArgumentException("As constantes devem ser valores apenas positivos\n"
+					+ "Use o modo de operação inverso");
+		}
+		
 		_proportionalConstant = proportionalConstant;
 		// Essa converção não é necessária, mas permite que a gente entre com valores
 		// de KI e KD em termos de 1/segundo
@@ -103,6 +113,12 @@ public class PIDController
 		// E principalmente a divisão tenham que ser feitas cada vez que o PID é calculado
 		// tl;dr: deixa o código mais rápido e mais eficiente.
 		
+		if(_controllerDirection == Direction.INVERSE)
+		{
+			_proportionalConstant *= -1;
+			_integralConstant *= -1;
+			_derivativeConstant *= -1;
+		}
 		return this;
 	}
 
@@ -165,4 +181,17 @@ public class PIDController
 		_input = newInput;
 		return this;
 	}
+	
+	public PIDController controllerDirection(Direction direction)
+	{
+		_controllerDirection = direction;
+		return this;
+	}
+	
+	public enum Direction
+	{
+	    INVERSE,
+	    DIRECT;
+	}
+
 }

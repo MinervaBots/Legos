@@ -69,6 +69,7 @@ public class Brinquedo
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, false, false);
 		
 		PIDController pidController = new PIDController()
+				.controllerDirection(PIDController.Direction.DIRECT)
 				.setPoint(0)
 				.sampleTime(10)
 				.tunings(3f, 0.08f, 3.6f)
