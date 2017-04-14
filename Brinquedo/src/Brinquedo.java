@@ -71,7 +71,8 @@ public class Brinquedo
 		PIDController pidController = new PIDController()
 				.setPoint(0)
 				.sampleTime(10)
-				.tunings(3f, 0.08f, 3.6f);
+				.tunings(3f, 0.08f, 3.6f)
+				.outputLimits(-100, 100);
 		
 		SensorArray sensorArray = new SensorArray();
 		
