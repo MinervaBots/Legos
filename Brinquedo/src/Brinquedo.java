@@ -67,8 +67,12 @@ public class Brinquedo
 	private static void setup()
 	{
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, false, false);
-		PIDController pidController = new PIDController(10, 0, 3f, 0.08f, 3.6f);
-
+		
+		PIDController pidController = new PIDController()
+				.setPoint(0)
+				.sampleTime(10)
+				.tunings(3f, 0.08f, 3.6f);
+		
 		SensorArray sensorArray = new SensorArray();
 		
 		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, 1, -20f));

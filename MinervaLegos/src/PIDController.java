@@ -15,22 +15,16 @@ public class PIDController
 
 	private float _integrativeTermSum;
 
+	public PIDController()
+	{
+		
+	}
+	
 	public PIDController(int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant)
 	{
-		_sampleTime = sampleTime;
-		_setPoint = setPoint;
-		_lastTime = System.currentTimeMillis();
-
-		_proportionalConstant = proportionalConstant;
-		// Essa converção não é necessária, mas permite que a gente entre com valores
-		// de KI e KD em termos de 1/segundo
-		float sampleTimeInSec = ((float)_sampleTime)/1000;
-		_integralConstant = integralConstant * sampleTimeInSec;
-		_derivativeConstant = derivativeConstant / sampleTimeInSec;
-		// A aplicação direta dos valores aqui nas constantes só é possivel porque o
-		// tempo de avalição do PID é fixado. Isso evita também que a multiplicação
-		// E principalmente a divisão tenham que ser feitas cada vez que o PID é calculado
-		// tl;dr: deixa o código mais rápido e mais eficiente.
+		sampleTime(sampleTime);
+		tunings(proportionalConstant, integralConstant, derivativeConstant);
+		setPoint(setPoint);
 	}
 	
 	public float run(float input)
@@ -64,5 +58,43 @@ public class PIDController
 		_lastOutput = output;
 		
 		return output;
+	}
+	
+	public PIDController setPoint(float newSetPoint)
+	{
+		_setPoint = newSetPoint;
+		return this;
+	}
+	
+	public PIDController tunings(float proportionalConstant, float integralConstant, float derivativeConstant)
+	{
+		_proportionalConstant = proportionalConstant;
+		// Essa converção não é necessária, mas permite que a gente entre com valores
+		// de KI e KD em termos de 1/segundo
+		float sampleTimeInSec = ((float)_sampleTime)/1000;
+		_integralConstant = integralConstant * sampleTimeInSec;
+		_derivativeConstant = derivativeConstant / sampleTimeInSec;
+		// A aplicação direta dos valores aqui nas constantes só é possivel porque o
+		// tempo de avalição do PID é fixado. Isso evita também que a multiplicação
+		// E principalmente a divisão tenham que ser feitas cada vez que o PID é calculado
+		// tl;dr: deixa o código mais rápido e mais eficiente.
+		
+		return this;
+	}
+
+	public PIDController sampleTime(int newSampleTime)
+	{
+	   if (newSampleTime > 0)
+	   {
+	      float ratio = newSampleTime / _sampleTime;
+	      _integralConstant *= ratio;
+	      _derivativeConstant /= ratio;
+	      _sampleTime = newSampleTime;
+	   }
+	   else
+	   {
+		   throw new IllegalArgumentException("newSampleTime não pode ser menor ou igual a zero");
+	   }
+	   return this;
 	}
 }
