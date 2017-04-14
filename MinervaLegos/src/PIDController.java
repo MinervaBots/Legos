@@ -29,7 +29,7 @@ public class PIDController
 
 		float error = _setPoint - intput;
 		_errorSum += (error * deltaTime);
-		float dErr = (error - _lastError);// / deltaTime;
+		float dErr = (error - _lastError) / deltaTime;
 		   
 		
 		float output = _proportionalConstant * error;	// Proporcional
