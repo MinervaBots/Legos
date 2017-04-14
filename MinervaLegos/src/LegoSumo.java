@@ -34,7 +34,7 @@ public class LegoSumo
 		if(_sensorArray.detectedCount != 0)
 		{
 			System.out.println("Error: " + error);
-			float power = _pidController.run(error);
+			float power = _pidController.input(error).run();
 			System.out.println("Power: " + power);
 			_motorController.move(error, power);
 			if(error != 0) _lastValidError = error;

@@ -3,6 +3,7 @@ public class PIDController
 {
 	private int _sampleTime;
 	private float _setPoint;
+	private float _input;
 	
 	private float _proportionalConstant;
 	private float _integralConstant;
@@ -18,12 +19,12 @@ public class PIDController
 	private float _minOutput;
 	private float _maxOutput;
 	
-	private boolean _auto;
+	private boolean _inAuto;
 	
 	public PIDController()
 	{
 		// Inicializa em modo automático
-		_auto = true;
+		_inAuto = true;
 	}
 	
 	public PIDController(int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
@@ -35,10 +36,10 @@ public class PIDController
 		outputLimits(minOutput, maxOutput);
 	}
 	
-	public float run(float input)
+	public float run()
 	{
 		// Se não estiver em modo automático retorna antes de calcular qualquer coisa
-		if(!_auto)
+		if(!_inAuto)
 		{
 			return _lastOutput;
 		}
@@ -50,7 +51,7 @@ public class PIDController
 			return _lastOutput;
 		}
 		
-		float error = _setPoint - input;
+		float error = _setPoint - _input;
 		
 		// Salva o valor acumulado do fator integrativo
 		// Isso torna possivel mudar a constante integrativa sem gerar uma mudança abruta na saída
@@ -65,7 +66,7 @@ public class PIDController
 		// Faz a derivada das entradas para evitar o "derivative kick", que ocorre mudando o setPoint
 		// Não acontece em nenhum dos nossos projetos, mas é uma implementação melhor,
 		// e o custo computacional é identico
-		float dInput = (input - _lastInput);
+		float dInput = (_input - _lastInput);
 		
 		
 		float output = _proportionalConstant * error;	// Proporcional
@@ -76,7 +77,7 @@ public class PIDController
 		// podem fazer com que a saída extrapole o intervalo de trabalho do sistema
 		output = clamp(output, _minOutput, _maxOutput);
 		
-		_lastInput = input;
+		_lastInput = _input;
 		_lastTime = now;
 		_lastOutput = output;
 		
@@ -142,13 +143,26 @@ public class PIDController
 		return value;
 	}
 	
-	public void toggle(boolean auto)
+	public void toggle(boolean newAuto)
 	{
-		_auto = auto;
+		// Se for de manual para automático,
+		// ajusta alguns valores pra garantir uma transição suave entre os modos
+		if(newAuto && !_inAuto)
+	    {
+			_lastInput = _input;
+			_integrativeTermSum = clamp(_lastOutput, _minOutput, _maxOutput);
+	    }
+		_inAuto = newAuto;
 	}
 	
 	public void togger()
 	{
-		toggle(!_auto);
+		toggle(!_inAuto);
+	}
+	
+	public PIDController input(float newInput)
+	{
+		_input = newInput;
+		return this;
 	}
 }
