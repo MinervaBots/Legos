@@ -63,7 +63,7 @@ public class Treta
 	private static void setup()
 	{
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.C), 1f, 1f, false, false);
-		PIDController pidController = new PIDController(0, 90f, 0.1f, 10f);
+		PIDController pidController = new PIDController(10, 0, 90f, 0.1f, 10f);
 		pidController.setIntegralLimits(-80, 80);
 		
 		SensorArray sensorArray = new SensorArray(new SensorFilter(3, 2));
