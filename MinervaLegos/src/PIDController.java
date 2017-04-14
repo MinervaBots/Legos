@@ -18,13 +18,17 @@ public class PIDController
 	private float _minOutput;
 	private float _maxOutput;
 	
+	private boolean _auto;
+	
 	public PIDController()
 	{
-		
+		// Inicializa em modo automático
+		_auto = true;
 	}
 	
 	public PIDController(int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
 	{
+		this();
 		sampleTime(sampleTime);
 		tunings(proportionalConstant, integralConstant, derivativeConstant);
 		setPoint(setPoint);
@@ -33,6 +37,12 @@ public class PIDController
 	
 	public float run(float input)
 	{
+		// Se não estiver em modo automático retorna antes de calcular qualquer coisa
+		if(!_auto)
+		{
+			return _lastOutput;
+		}
+		
 		long now = System.currentTimeMillis();
 		long deltaTime = (now - _lastTime);
 		if(deltaTime < _sampleTime)
@@ -130,5 +140,15 @@ public class PIDController
 		if(value < min) return min;
 		else if(value > max) return max;
 		return value;
+	}
+	
+	public void toggle(boolean auto)
+	{
+		_auto = auto;
+	}
+	
+	public void togger()
+	{
+		toggle(!_auto);
 	}
 }
