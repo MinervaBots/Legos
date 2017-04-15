@@ -1,12 +1,15 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class SensorArray
+import pid.InputSource;
+
+public class SensorArray implements InputSource
 {
 	public int detectedCount;
 	
 	private List<Sensor> _sensors;
 	private SensorFilter _filter;
+	private float _value;
 	
 	public SensorArray()
 	{
@@ -50,6 +53,12 @@ public class SensorArray
 				weightSum += sensor.getWeight();
 			}
 		}
-		return detectedCount == 0 ? 0 : errorsSum / weightSum;
+		_value = detectedCount == 0 ? 0 : errorsSum / weightSum;
+		return _value;
+	}
+
+	@Override
+	public float read() {
+		return _value;
 	}
 }

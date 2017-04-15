@@ -1,8 +1,11 @@
-public abstract class Sensor
+import pid.InputSource;
+
+public abstract class Sensor implements InputSource
 {
 	protected float _weight;
 	protected float _error;
 	protected boolean _detecting;
+	protected float _value;
 	
 	public Sensor(float weight, float error)
 	{
@@ -26,4 +29,11 @@ public abstract class Sensor
 	}
 	
 	public abstract boolean update();
+	
+
+	@Override
+	public float read()
+	{
+		return _value;
+	}
 }

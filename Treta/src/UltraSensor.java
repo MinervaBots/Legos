@@ -15,6 +15,7 @@ public class UltraSensor extends Sensor
 	@Override
 	public boolean update()
 	{
-		return _sensor.getDistance() < _maxDistance;
+		_value = _sensor.getDistance();
+		return _value < _maxDistance;
 	}
 }

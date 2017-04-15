@@ -1,7 +1,8 @@
-
+package pid;
 public class PIDController
 {
-	private Direction _controllerDirection;
+	private PIDDirection _controllerDirection;
+	private PIDMode _controllerMode;
 	private int _sampleTime;
 	private float _setPoint;
 	private float _input;
@@ -24,11 +25,12 @@ public class PIDController
 	
 	public PIDController()
 	{
-		_inAuto = true; // O padrão é em modo automático
-		controllerDirection(Direction.DIRECT);
+		_lastTime = System.currentTimeMillis();
+		controllerMode(PIDMode.AUTOMATIC); // O padrão é em modo automático
+		controllerDirection(PIDDirection.DIRECT);
 	}
 	
-	public PIDController(Direction direction, int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
+	public PIDController(PIDDirection direction, int sampleTime, float setPoint, float proportionalConstant, float integralConstant, float derivativeConstant, float minOutput, float maxOutput)
 	{
 		this();
 		controllerDirection(direction);
@@ -113,7 +115,7 @@ public class PIDController
 		// E principalmente a divisão tenham que ser feitas cada vez que o PID é calculado
 		// tl;dr: deixa o código mais rápido e mais eficiente.
 		
-		if(_controllerDirection == Direction.INVERSE)
+		if(_controllerDirection == PIDDirection.INVERSE)
 		{
 			_proportionalConstant *= -1;
 			_integralConstant *= -1;
@@ -152,46 +154,52 @@ public class PIDController
 	   return this;
 	}
 	
+	public PIDController input(float newInput)
+	{
+		_input = newInput;
+		return this;
+	}
+
+	public PIDController controllerDirection(PIDDirection direction)
+	{
+		_controllerDirection = direction;
+		return this;
+	}
+
+	public PIDController controllerMode(PIDMode mode)
+	{
+		// Se for de manual para automático,
+		// ajusta alguns valores pra garantir uma transição suave entre os modos
+		if(mode == PIDMode.AUTOMATIC && _controllerMode == PIDMode.MANUAL)
+	    {
+			_lastInput = _input;
+			_integrativeTermSum = clamp(_lastOutput, _minOutput, _maxOutput);
+	    }
+		_controllerMode = mode;
+		return this;
+	}
+
+	
 	private static float clamp(float value, float min, float max)
 	{
 		if(value < min) return min;
 		else if(value > max) return max;
 		return value;
 	}
-	
-	public void toggle(boolean newAuto)
-	{
-		// Se for de manual para automático,
-		// ajusta alguns valores pra garantir uma transição suave entre os modos
-		if(newAuto && !_inAuto)
-	    {
-			_lastInput = _input;
-			_integrativeTermSum = clamp(_lastOutput, _minOutput, _maxOutput);
-	    }
-		_inAuto = newAuto;
-	}
-	
-	public void toggle()
-	{
-		toggle(!_inAuto);
-	}
-	
-	public PIDController input(float newInput)
-	{
-		_input = newInput;
-		return this;
-	}
-	
-	public PIDController controllerDirection(Direction direction)
-	{
-		_controllerDirection = direction;
-		return this;
-	}
-	
-	public enum Direction
-	{
-	    INVERSE,
-	    DIRECT;
+
+	public PIDMode getControllerMode() {
+		return _controllerMode;
 	}
 
+	public PIDDirection getControllerDirection() {
+		return _controllerDirection;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Kp = " + _proportionalConstant + "\n" +
+				"Ki = " + _integralConstant + "\n" + 
+				"Kd = " + _derivativeConstant;
+	}
 }

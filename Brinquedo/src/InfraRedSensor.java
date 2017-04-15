@@ -18,6 +18,7 @@ public class InfraRedSensor extends Sensor
 	public boolean update()
 	{
 		_sensor.getDistanceMode().fetchSample(_dist, 0);
-		return _dist[0] < _maxDistance;
+		_value = _dist[0];
+		return _value < _maxDistance;
 	}
 }

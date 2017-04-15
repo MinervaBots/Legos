@@ -4,6 +4,8 @@ import lejos.nxt.MotorPort;
 import lejos.nxt.NXTRegulatedMotor;
 import lejos.nxt.SensorPort;
 import lejos.nxt.UltrasonicSensor;
+import pid.PIDController;
+import pid.PIDDirection;
 
 public class Treta
 {
@@ -64,7 +66,7 @@ public class Treta
 	{
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.C), 1f, 1f, false, false);
 		PIDController pidController = new PIDController(
-				PIDController.Direction.DIRECT, 10, 0, 90f, 0.1f, 10f, -100, 100);
+				PIDDirection.DIRECT, 10, 0, 90f, 0.1f, 10f, -100, 100);
 		
 		SensorArray sensorArray = new SensorArray(new SensorFilter(3, 2));
 		

@@ -6,6 +6,8 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.NXTUltrasonicSensor;
+import pid.PIDController;
+import pid.PIDDirection;
 
 public class Brinquedo
 {
@@ -69,7 +71,7 @@ public class Brinquedo
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, false, false);
 		
 		PIDController pidController = new PIDController()
-				.controllerDirection(PIDController.Direction.DIRECT)
+				.controllerDirection(PIDDirection.DIRECT)
 				.setPoint(0)
 				.sampleTime(10)
 				.tunings(3f, 0.08f, 3.6f)

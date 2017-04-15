@@ -1,15 +1,18 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import pid.PIDController;
+import pid.PIDTuner;
+
 public class LegoSumo
 {
 	private int _initDelay;
 	
 	private SensorArray _sensorArray;
-	private PIDController _pidController;
+	private PIDController _PidController;
 	private MotorController _motorController;
 	
-	private float _lastValidDirection;
+	private float _lastValidPower;
 
 	private List<ActiveWeapon> _activeWeapons;
 	
@@ -17,7 +20,7 @@ public class LegoSumo
 	{
 		_motorController = motorController;
 		_sensorArray = sensorArray;
-		_pidController = pidController;
+		_PidController = pidController;
 		_initDelay = delay;
 		_activeWeapons = new ArrayList<ActiveWeapon>();
 	}
@@ -34,20 +37,20 @@ public class LegoSumo
 		System.out.println("Error: " + direction);
 		if(_sensorArray.detectedCount != 0)
 		{
-			float power = _pidController.input(direction).run();
+			float power = _PidController.input(direction).run();
 			System.out.println("Power: " + power);
 			
-			_motorController.move(direction, power);
-			if(direction != 0)
+			_motorController.move(power);
+			if(power != 0)
 			{
 				// Se temos uma direção pra seguir, deixa ela guardada.
 				// 0 é invalido pois o robô iria pra frente e provavelmente sairia da arena.
-				_lastValidDirection = direction;
+				_lastValidPower = power;
 			}
 			return;
 		}
 		// Segue na ultima direção que o alvo foi localizado
-		_motorController.move(_lastValidDirection, 200);
+		_motorController.move(_lastValidPower);
 	}
 	
 	public void start(Direction initialDirection)
@@ -62,11 +65,11 @@ public class LegoSumo
 		}
 		if(initialDirection == Direction.Left)
 		{
-			_motorController.move(-1, 200);
+			_motorController.move(-100);
 		}
 		else
 		{
-			_motorController.move(1, 200);
+			_motorController.move(100);
 		}
 		while(_sensorArray.update() == 0);
 	}
@@ -89,4 +92,10 @@ public class LegoSumo
 		Left,
 		Right
 	}
+	
+	
+	// ------------------------------ Tuning ------------------------------
+	private PIDTuner _PidTuner;
+	
+	
 }
