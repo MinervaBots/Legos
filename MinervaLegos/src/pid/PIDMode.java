@@ -2,6 +2,5 @@ package pid;
 
 public enum PIDMode
 {
-	AUTOMATIC,
-	MANUAL
+	AUTOMATIC, MANUAL
 }

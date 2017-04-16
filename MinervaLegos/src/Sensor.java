@@ -6,7 +6,7 @@ public abstract class Sensor implements InputSource
 	protected float _error;
 	protected boolean _detecting;
 	protected float _value;
-	
+
 	public Sensor(float weight, float error)
 	{
 		_weight = weight;
@@ -22,14 +22,13 @@ public abstract class Sensor implements InputSource
 	{
 		return _error;
 	}
-	
+
 	public final boolean isDetecting()
 	{
 		return _detecting;
 	}
-	
+
 	public abstract boolean update();
-	
 
 	@Override
 	public float read()

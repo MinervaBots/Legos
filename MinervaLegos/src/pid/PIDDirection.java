@@ -2,6 +2,5 @@ package pid;
 
 public enum PIDDirection
 {
-    INVERSE,
-    DIRECT
+	INVERSE, DIRECT
 }

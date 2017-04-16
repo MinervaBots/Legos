@@ -21,9 +21,8 @@ public class PIDAutoTune
 	private float _outputStep;
 	private float _outputStart;
 	private long _lastTime;
-	
-	private float _gainMargin /* Ku */, _oscillationPeriod /* Tu */;
 
+	private float _gainMargin /* Ku */, _oscillationPeriod /* Tu */;
 
 	private PIDDirection _controllerDirection;
 
@@ -48,7 +47,7 @@ public class PIDAutoTune
 
 	public boolean runtime(float input)
 	{
-		//boolean justEvaluated = false;
+		// boolean justEvaluated = false;
 		if (_peakCount > 9 && _running)
 		{
 			_running = false;
@@ -61,7 +60,7 @@ public class PIDAutoTune
 
 		_lastTime = now;
 		float referanceValue = input;
-		//justEvaluated = true;
+		// justEvaluated = true;
 
 		if (!_running)
 		{
@@ -97,8 +96,8 @@ public class PIDAutoTune
 		}
 
 		boolean isMax = true, isMin = true;
-		//isMax = true;
-		//isMin = true;
+		// isMax = true;
+		// isMin = true;
 		// id peaks
 		for (int i = _nLookBack - 1; i >= 0; i--)
 		{
@@ -249,36 +248,31 @@ public class PIDAutoTune
 
 	public enum PIDControlType
 	{
-		P(0),
-		PI(1),
-		PID(2);
-		
-		/*
-		PD(2),
-		PESSEN_INTEGRAL_RULE(4),
-		SOME_OVERSHOT(5),
-		NO_OVERSHOT(6);
-		//*/
-		
-		private final int value;
-	    private PIDControlType(int value) {
-	        this.value = value;
-	    }
+		P(0), PI(1), PID(2);
 
-	    public int getValue() {
-	        return value;
-	    }
+		/*
+		 * PD(2), PESSEN_INTEGRAL_RULE(4), SOME_OVERSHOT(5), NO_OVERSHOT(6); //
+		 */
+
+		private final int value;
+
+		private PIDControlType(int value)
+		{
+			this.value = value;
+		}
+
+		public int getValue()
+		{
+			return value;
+		}
 	}
-	
-	float[][] _weights = {
-			{0.5f, 	0, 		0}, 	// P
-			{0.45f, 0.54f, 	0},		// PI
-			{0.60f, 1.2f,	3/40},	// PID
+
+	float[][] _weights = { { 0.5f, 0, 0 }, // P
+			{ 0.45f, 0.54f, 0 }, // PI
+			{ 0.60f, 1.2f, 3 / 40 }, // PID
 			/*
-			{0.6f, 	1/2, 	1/8},
-			{0.7f, 	1/2.5f, 3/20},
-			{0.33f, 1/2, 	1/3},
-			{0.2f, 	1/2, 	1/3},
-			*/
+			 * {0.6f, 1/2, 1/8}, {0.7f, 1/2.5f, 3/20}, {0.33f, 1/2, 1/3}, {0.2f,
+			 * 1/2, 1/3},
+			 */
 	};
 }

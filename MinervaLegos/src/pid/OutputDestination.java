@@ -1,5 +1,6 @@
 package pid;
 
-public interface OutputDestination {
+public interface OutputDestination
+{
 	void write(float value);
 }
