@@ -1,6 +1,5 @@
-import pid.OutputDestination;
 
-public interface MotorController extends OutputDestination
-{
-	void move(float power);
+public interface MotorController {
+
+	void move(float direction, float power);
 }
