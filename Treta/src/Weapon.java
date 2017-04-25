@@ -4,7 +4,7 @@ public class Weapon implements ActiveWeapon
 {
 	private RegulatedMotor _motor;
 	private boolean _revert;
-
+	
 	public <T extends RegulatedMotor> Weapon(T motor, boolean revert)
 	{
 		_motor = motor;
@@ -14,7 +14,7 @@ public class Weapon implements ActiveWeapon
 	@Override
 	public void start()
 	{
-		if (_revert)
+		if(_revert)
 		{
 			_motor.backward();
 		}
@@ -23,7 +23,7 @@ public class Weapon implements ActiveWeapon
 			_motor.forward();
 		}
 	}
-
+	
 	@Override
 	public void setPower(int power)
 	{
