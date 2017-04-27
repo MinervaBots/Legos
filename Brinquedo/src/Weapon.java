@@ -27,6 +27,7 @@ public class Weapon implements ActiveWeapon
 	@Override
 	public void setPower(int power)
 	{
+		power *= _motor.getMaxSpeed()/100;
 		_motor.setSpeed(power);
 	}
 }

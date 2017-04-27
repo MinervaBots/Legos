@@ -23,17 +23,17 @@ public class TwoMotorsController implements MotorController
 	}
 	
 	@Override
-	public void move(float direction, float power)
+	public void move(float power)
 	{
 		float leftPower = 100;
 		float rightPower = 100;
-		if(direction < 0)
+		if(power > 0)
 		{
-			leftPower = 100 - Math.abs(power);
+			leftPower -= 2*Math.abs(power);
 		}
-		else if(direction > 0)
+		else if(power < 0)
 		{
-			rightPower = 100 - Math.abs(power);
+			rightPower -= 2*Math.abs(power);
 		}
 		/*
 		leftPower = clamp(leftPower, -100, 100);

@@ -6,6 +6,7 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3IRSensor;
 import lejos.hardware.sensor.NXTUltrasonicSensor;
+import lejos.utility.Delay;
 
 public class Brinquedo
 {
@@ -13,8 +14,8 @@ public class Brinquedo
 	
 	public static void main(String[] args)
 	{
-		setup();
 		bindButtons();
+		setup();
 		selectStrategy();
 		
 		while(true)
@@ -40,7 +41,7 @@ public class Brinquedo
 			}
 		});
 	}
-	
+
 	private static void selectStrategy()
 	{
 		System.out.println("Estratégia");
@@ -63,24 +64,26 @@ public class Brinquedo
 		Button.ENTER.waitForPressAndRelease();
 		_legoSumo.start(initialDirection);
 	}
-	
+
 	private static void setup()
 	{
-		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, false, false);
-		
+		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.D), 1f, 1f, true, true);
+
 		PIDController pidController = new PIDController()
 				.setPoint(0)
-				.sampleTime(10)
-				.tunings(3f, 0.08f, 3.6f)
+				.sampleTime(20)
+				.tunings(95f, 1.5f, 3.6f)
 				.outputLimits(-100, 100);
 		
 		SensorArray sensorArray = new SensorArray();
 		
-		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, 1, -20f));
+		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S1), 40, 1, -1f));
+		//sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S2), 40, 2, 0));
 		sensorArray.addSensor(new InfraRedSensor(new EV3IRSensor(SensorPort.S2), 40, 3, 0f));
-		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 1, 20f));
+		sensorArray.addSensor(new UltraSensor(new NXTUltrasonicSensor(SensorPort.S4), 40, 1, 1f));
 		
 		_legoSumo = new LegoSumo(motor, sensorArray, pidController, 5000);
 		_legoSumo.addWeapon(new Weapon(new NXTRegulatedMotor(MotorPort.C), false), 100);
+
 	}
 }

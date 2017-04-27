@@ -11,8 +11,8 @@ public class Treta
 	
 	public static void main(String[] args)
 	{
-		setup();
 		bindButtons();
+		setup();
 		selectStrategy();
 		
 		while(true)
@@ -39,7 +39,7 @@ public class Treta
 	
 	private static void selectStrategy()
 	{
-		System.out.println("Estratégia");
+		System.out.println("Estrategia");
 		LegoSumo.Direction initialDirection = LegoSumo.Direction.None;
 		while(!Button.ENTER.isDown() || initialDirection == LegoSumo.Direction.None)
 		{
@@ -63,9 +63,14 @@ public class Treta
 	private static void setup()
 	{
 		MotorController motor = new TwoMotorsController(new NXTRegulatedMotor(MotorPort.B), new NXTRegulatedMotor(MotorPort.C), 1f, 1f, false, false);
-		PIDController pidController = new PIDController(10, 0, 90f, 0.1f, 10f, -100, 100);
 		
-		SensorArray sensorArray = new SensorArray(new SensorFilter(3, 2));
+		PIDController pidController = new PIDController()
+				.setPoint(0)
+				.sampleTime(20)
+				.tunings(95f, 1.5f, 3.6f)
+				.outputLimits(-100, 100);
+				
+		SensorArray sensorArray = new SensorArray(new SensorFilter(1, 1));
 		
 		sensorArray.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S1), 40, 1, -1f));
 		sensorArray.addSensor(new UltraSensor(new UltrasonicSensor(SensorPort.S2), 40, 3, 0f));
